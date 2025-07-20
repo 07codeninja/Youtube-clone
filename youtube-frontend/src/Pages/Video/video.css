@@ -1,0 +1,243 @@
+/* Fix white space issue globally */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Main container */
+.video {
+  background-color: black;
+  margin-top: 56px;
+  display: flex;
+  color: white;
+  padding: 30px 40px;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+/* Left video section */
+.videoPostSection {
+  width: 100%;
+  max-width: 1050px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Video player */
+.video_youtube_video {
+  border-radius: 12px;
+  background-color: black;
+  outline: none;
+}
+
+/* Title and channel info */
+.video_youtubeAbout {
+  margin-top: 20px;
+}
+
+.video_uTubeTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.youtube_video_ProfileBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.youtube_video_ProfileBlock_left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.youtube_video_ProfileBlock_left_image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.youtubeVideo_subsView {
+  display: flex;
+  flex-direction: column;
+}
+
+.youtubePostProfileName {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.youtubePostProfileSubs {
+  font-size: 14px;
+  color: #AAAAAA;
+}
+
+/* Subscribe button */
+.subscribeBtnYoutube {
+  background-color: white;
+  color: black;
+  padding: 0px 16px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+.subscribeBtnYoutube:hover {
+  background-color: #ddd;
+}
+
+/* Like/Dislike buttons */
+.youtube_like_dislike_buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.likeButton,
+.dislikeButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.likeButton:hover,
+.dislikeButton:hover {
+  background-color: #222;
+}
+
+.likeButton.active,
+.dislikeButton.active {
+  border-color: #065fd4;
+  color: #065fd4;
+}
+
+.likeCount {
+  font-size: 14px;
+}
+
+/* Comments input section */
+.youtubeSelfComment {
+  display: flex;
+  margin-top: 20px;
+}
+
+.video_youtubeSelfCommentProfile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.addAComment {
+  flex: 1;
+}
+
+.addAcommentInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 8px;
+  background-color: #111;
+  color: white;
+}
+
+.cancelSubmitComment {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.cancelComment {
+  cursor: pointer;
+  color: #065fd4;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.cancelComment:hover {
+  text-decoration: underline;
+}
+
+/* Comment list */
+.youtubeOthersComments {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.commentText {
+  color: white;
+  font-size: 14px;
+  padding-top: 4px;
+}
+
+/* Suggestions sidebar */
+.videoSuggestions {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 56px);
+}
+
+.videoSuggestionsBlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.video_suggestion_thumbnail {
+  width: 168px;
+  height: 94px;
+  flex-shrink: 0;
+}
+
+.video_suggestion_thumbnail_img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.video_suggestions_About {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.video_suggestions_About_title {
+  font-weight: 600;
+  color: white;
+}
+
+.video_suggestions_About_Profile {
+  color: #aaa;
+  font-size: 13px;
+}

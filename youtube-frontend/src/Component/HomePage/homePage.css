@@ -1,0 +1,127 @@
+.homePage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-left: 274px;
+  min-height: 100vh;
+  background-color: black;
+  color: white;
+}
+
+.homePage.full {
+  margin-left: 0;
+}
+
+.homePage_options {
+  display: flex;
+  position: fixed;
+  top: 56px;
+  z-index: 1;
+  width: 100%;
+  gap: 10px;
+  overflow-x: auto;
+  background-color: black;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.homePage_options::-webkit-scrollbar {
+  height: 6px;
+}
+
+.homePage_option {
+  flex: 0 0 auto;
+  height: 30px;
+  padding: 4px 10px;
+  background-color: rgb(42, 42, 42);
+  color: white;
+  font-weight: 600;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.home_mainPage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 100px 20px 40px 20px;
+  background-color: black;
+  box-sizing: border-box;
+}
+
+.home_mainPage.expanded {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.youtube_Video {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  cursor: pointer;
+  height: auto;
+  color: white;
+}
+
+.youtube_thumbnailBox {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  height: 216px;
+}
+
+.youtube_thumbnailPic {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.youtube_timingThumbnail {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2px 6px;
+  font-size: 12px;
+  color: black;
+  border-radius: 4px;
+}
+
+.youtubeTitleBox {
+  display: flex;
+  margin-top: 10px;
+}
+
+.youtubeTitleBoxProfile {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.youtube_thumbnail_Profile {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.youtubeTitleBox_Title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.youtube_videoTitle {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.youtube_channelName,
+.youtubeVideo_likes {
+  font-size: 14px;
+  color: rgb(170, 170, 170);
+}

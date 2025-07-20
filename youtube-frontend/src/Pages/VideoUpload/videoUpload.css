@@ -1,0 +1,76 @@
+.videoUpload {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploadBox {
+  background-color: #111;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px white;
+  width: 400px;
+}
+
+.uploadVideoTitle {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+
+.uploadForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.uploadFormInputs {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #333;
+  color: white;
+  font-size: 14px;
+}
+
+.uploadFormInputs::placeholder {
+  color: #aaa;
+}
+
+.uploadLabel {
+  color: white;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.uploadFileInput {
+  margin-bottom: 15px;
+  color: white;
+}
+
+.uploadBtnGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.uploadBtn {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.uploadBtn:hover {
+  background-color: white;
+  color: black;
+  transition: 0.3s ease;
+}
