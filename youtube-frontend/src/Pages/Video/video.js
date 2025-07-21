@@ -1,3 +1,4 @@
+// src/pages/Video.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -9,21 +10,18 @@ const Video = () => {
   const { id } = useParams();
 
   const [videoData, setVideoData] = useState(null);
-  const [videoUrl, setVideoURL] = useState('');
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-
   const [commentInput, setCommentInput] = useState('');
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchVideoById = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/getVideoById/${id}`);
+        const res = await axios.get(`http://localhost:4000/api/getVideoById/${id}`);
         const video = res.data.video;
         setVideoData(video);
-        setVideoURL(video.videoLink);
         setLikes(video.like);
       } catch (err) {
         console.log(err);
@@ -32,7 +30,7 @@ const Video = () => {
 
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/comment/${id}`); // ✅ FIXED
+        const res = await axios.get(`http://localhost:4000/api/comment/${id}`);
         setComments(res.data.comments);
       } catch (err) {
         console.log(err);
@@ -44,22 +42,19 @@ const Video = () => {
   }, [id]);
 
   const handleLike = () => {
-    if (liked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(disliked ? likes + 2 : likes + 1);
+    setLiked(!liked);
+    if (liked) setLikes(prev => prev - 1);
+    else {
+      setLikes(prev => (disliked ? prev + 2 : prev + 1));
       setDisliked(false);
     }
-    setLiked(!liked);
   };
 
   const handleDislike = () => {
-    if (disliked) {
-      setDisliked(false);
-    } else {
-      if (liked) setLikes(likes - 1);
+    setDisliked(!disliked);
+    if (!disliked && liked) {
       setLiked(false);
-      setDisliked(true);
+      setLikes(prev => prev - 1);
     }
   };
 
@@ -67,7 +62,7 @@ const Video = () => {
     if (commentInput.trim() === '') return;
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/comment`, // ✅ FIXED
+        `http://localhost:4000/api/comment`,
         {
           video: id,
           message: commentInput,
@@ -85,26 +80,20 @@ const Video = () => {
     }
   };
 
-  const handleCancelComment = () => {
-    setCommentInput('');
-  };
-
-  const handleCommentChange = (e) => {
-    setCommentInput(e.target.value);
-  };
+  const handleCancelComment = () => setCommentInput('');
 
   return (
     <div className="video">
       <div className="videoPostSection">
         {/* Video Player */}
-        <div className="video_youtube">
-          {videoData && (
+        {videoData?.videoLink && (
+          <div className="video_youtube">
             <video width="100%" controls autoPlay className="video_youtube_video">
-              <source src={videoUrl} type="video/mp4" />
+              <source src={videoData.videoLink} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Title and Channel Info */}
         <div className="video_youtubeAbout">
@@ -124,15 +113,27 @@ const Video = () => {
               </Link>
 
               <div className="youtubeVideo_subsView">
-                <div className="youtubePostProfileName">{videoData?.user?.userName}</div>
+<div className="youtubePostProfileName">
+  {videoData?.user?.userName || 'Unknown User'}
+</div>
                 <div className="youtubePostProfileSubs">
-                  Joined: {new Date(videoData?.user?.createdAt).toLocaleDateString()}
+                  Joined:{' '}
+                  {videoData?.user?.createdAt
+                    ? new Date(videoData.user.createdAt).toDateString()
+                    : 'N/A'}
                 </div>
               </div>
             </div>
 
             <div className="subscribeBtnYoutube">Subscribe</div>
           </div>
+
+          {/* Description */}
+          {videoData?.description && (
+            <div className="video_description">
+              <p>{videoData.description}</p>
+            </div>
+          )}
 
           {/* Like/Dislike Buttons */}
           <div className="youtube_like_dislike_buttons">
@@ -159,7 +160,7 @@ const Video = () => {
               type="text"
               placeholder="Add a comment..."
               value={commentInput}
-              onChange={handleCommentChange}
+              onChange={(e) => setCommentInput(e.target.value)}
             />
             {commentInput && (
               <div className="cancelSubmitComment">
@@ -205,7 +206,7 @@ const Video = () => {
         </div>
       </div>
 
-      {/* Video Suggestions */}
+      {/* Sidebar Suggestions (Static Placeholder) */}
       <div className="videoSuggestions">
         {[...Array(6)].map((_, i) => (
           <div className="videoSuggestionsBlock" key={i}>

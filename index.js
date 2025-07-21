@@ -1,29 +1,30 @@
 const express = require('express');
-const dotenv = require('dotenv'); // ✅ add this line
+const dotenv = require('dotenv');
+require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-dotenv.config(); // ✅ now this will work
-require('./Connection/conn'); // ✅ MongoDB connection
+// Load env variables
+dotenv.config();
+
+require('./Connection/conn');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',  // React front-end
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-const userRoutes = require('./Routes/user');
-const videoRoutes = require('./Routes/video');
-const commentRoutes = require('./Routes/comment');
+app.use('/api', require('./Routes/user'));
+app.use('/api', require('./Routes/video'));
+app.use('/api', require('./Routes/comment'));
 
-app.use('/api', userRoutes);
-app.use('/api', videoRoutes);
-app.use('/api', commentRoutes);
-
-// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

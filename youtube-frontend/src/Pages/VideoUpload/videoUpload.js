@@ -14,15 +14,11 @@ const VideoUpload = () => {
     thumbnail: '',
     videoType: '',
   });
-
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
-  const handleOnChangeInput = (event, name) => {
-    setInputField({
-      ...inputField,
-      [name]: event.target.value,
-    });
+  const handleOnChangeInput = (e, name) => {
+    setInputField(prev => ({ ...prev, [name]: e.target.value }));
   };
 
   const uploadMedia = async (e, type, key) => {
@@ -32,51 +28,53 @@ const VideoUpload = () => {
     data.append('upload_preset', 'youtube-clone');
 
     try {
-      setLoader(true); // Show loader during upload
+      setLoader(true);
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/dax5bbfos/${type}/upload`,
         data,
         {
-          onUploadProgress: (progressEvent) => {
-            const percent = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            console.log(`${type} Upload Progress: ${percent}%`);
+          onUploadProgress: e => {
+            const percent = Math.round((e.loaded * 100) / e.total);
+            console.log(`${type} Upload: ${percent}%`);
           },
         }
       );
 
-      const mediaUrl = response.data.secure_url;
-      console.log(`Uploaded ${type} URL:`, mediaUrl);
-
-      setInputField((prev) => ({
+      setInputField(prev => ({
         ...prev,
-        [key]: mediaUrl,
+        [key]: response.data.secure_url,
       }));
     } catch (err) {
-      console.error(`${type} Upload Error:`, err);
+      console.error(`${type} upload error:`, err);
+      alert('Upload failed');
     } finally {
-      setLoader(false); // Hide loader after upload
+      setLoader(false);
     }
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
     const { title, description, videoType, thumbnail, videoLink } = inputField;
 
     if (!title || !description || !videoType || !thumbnail || !videoLink) {
-      alert('Please fill all fields and upload both video & thumbnail!');
-      return;
+      return alert('Please fill all fields');
     }
 
     setLoader(true);
-    console.log('Uploading video with data:', inputField);
-
-    setTimeout(() => {
-      setLoader(false);
-      alert('Video uploaded successfully!');
+    try {
+      const res = await axios.post(
+        'http://localhost:4000/api/video',
+        inputField,
+        { withCredentials: true }
+      );
+      console.log('✔️ Uploaded:', res.data);
       navigate('/');
-    }, 1500);
+    } catch (err) {
+      console.error('Upload video failed:', err.response?.data || err);
+      alert(err.response?.data.error || 'Upload error');
+    } finally {
+      setLoader(false);
+    }
   };
 
   return (
@@ -86,69 +84,39 @@ const VideoUpload = () => {
           <YouTubeIcon sx={{ fontSize: "54px", color: "red", marginRight: "10px" }} />
           <span>Upload Video</span>
         </div>
-
         <form className="uploadForm" onSubmit={handleUpload}>
-          <input
-            type="text"
-            placeholder="Title of Video"
-            className="uploadFormInputs"
-            value={inputField.title}
-            onChange={(e) => handleOnChangeInput(e, 'title')}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Description"
-            className="uploadFormInputs"
-            value={inputField.description}
-            onChange={(e) => handleOnChangeInput(e, 'description')}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Video Type (e.g. Education, Music)"
-            className="uploadFormInputs"
-            value={inputField.videoType}
-            onChange={(e) => handleOnChangeInput(e, 'videoType')}
-            required
-          />
+          {['title','description','videoType','videoLink','thumbnail'].map((name,i)=>{
+            if(name==='thumbnail'||name==='videoLink') return null;
+            return (
+              <input
+                key={i}
+                type={name==='videoLink'?'text':'text'}
+                placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
+                className="uploadFormInputs"
+                value={inputField[name]}
+                onChange={e => handleOnChangeInput(e, name)}
+                required
+              />
+            );
+          })}
 
-          <label className='uploadLabel'>Thumbnail</label>
-          <input
-            type="file"
-            accept="image/*"
-            className="uploadFileInput"
-            onChange={(e) => uploadMedia(e, 'image', 'thumbnail')}
-            required
-          />
-          {inputField.thumbnail && (
-            <img
-              src={inputField.thumbnail}
-              alt="Thumbnail Preview"
-              className="thumbnailPreview"
-            />
-          )}
+          <label>Thumbnail</label>
+          <input type="file" accept="image/*" onChange={e => uploadMedia(e, 'image', 'thumbnail')} required />
+          {inputField.thumbnail && <img src={inputField.thumbnail} alt="Thumbnail" className="thumbnailPreview"/>}
 
-          <label className='uploadLabel'>Video File</label>
-          <input
-            type="file"
-            accept="video/*"
-            className="uploadFileInput"
-            onChange={(e) => uploadMedia(e, 'video', 'videoLink')}
-            required
-          />
+          <label>Video File</label>
+          <input type="file" accept="video/*" onChange={e => uploadMedia(e, 'video', 'videoLink')} required />
 
           <div className='uploadBtnGroup'>
             <button type="submit" className="uploadBtn" disabled={loader}>
               {loader ? 'Uploading...' : 'Upload'}
             </button>
             <button type="button" className="uploadBtn" onClick={() => navigate('/')}>
-              Home
+              Cancel
             </button>
           </div>
         </form>
 
-        {/* ✅ Loader Below Form */}
         {loader && (
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
             <CircularProgress />

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+require('dotenv').config(); // make sure it's here
 
 mongoose
-  .connect("mongodb+srv://chat-box-user:gVzQ9wdVr5bmIG5r@cluster0.qyd9c32.mongodb.net/youtubeBackend?retryWrites=true&w=majority")
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
